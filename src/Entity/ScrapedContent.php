@@ -60,7 +60,7 @@ use Drupal\web_scraper\ScrapedContentInterface;
  *   fieldable = FALSE,
  *   entity_keys = {
  *     "id" = "id",
- *     "label" = "label",
+ *     "label" = "headline",
  *     "langcode" = "langcode"
  *   },
  *   links = {
@@ -68,8 +68,7 @@ use Drupal\web_scraper\ScrapedContentInterface;
  *     "edit-form" = "/scraped_content/{scraped_content}/edit",
  *     "delete-form" = "/scraped_content/{scraped_content}/delete",
  *     "collection" = "/scraped_content/list"
- *   },
- *   list_cache_contexts = {"user"}
+ *   }
  * )
  */
 class ScrapedContent extends ContentEntityBase implements ScrapedContentInterface {
