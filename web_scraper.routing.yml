@@ -1,0 +1,59 @@
+#
+#  These route names do follow a particular pattern
+#  @see: https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Entity%21entity.api.php/group/entity_api/8.5.x
+#
+#  The \d+ requirement specifies that the scraped_content must be numeric
+#  digits.
+#  @see: https://www.drupal.org/docs/8/api/routing-system/parameters-values-validation-in-routes
+#
+
+entity.scraped_content.canonical:
+  path: '/scraped_content/{scraped_content}'
+  defaults:
+    _entity_view: 'scraped_content'
+    _title: 'Scraped Content Data'
+  requirements:
+    _entity_access: 'scraped_content.view'
+    scraped_content: \d+
+
+entity.scraped_content.collection:
+  path: '/scraped_content/list'
+  defaults:
+    _entity_list: 'scraped_content'
+    _title: 'Scraped Content Data'
+  requirements:
+    _permission: 'view scraped_content entity'
+
+entity.scraped_content.add_form:
+  path: '/scraped_content/add'
+  defaults:
+    _entity_form: scraped_content.default
+    _title: 'Add Scraped Content Data'
+  requirements:
+    _entity_create_access: 'scraped_content'
+
+entity.scraped_content.edit_form:
+  path: '/scraped_content/{scraped_content}/edit'
+  defaults:
+    _entity_form: scraped_content.default
+    _title: 'Edit Scraped Content Data'
+  requirements:
+    _entity_access: 'scraped_content.update'
+    scraped_content: \d+
+
+entity.scraped_content.delete_form:
+  path: '/scraped_content/{scraped_content}/delete'
+  defaults:
+    _entity_form: scraped_content.delete
+    _title: 'Delete Scraped Content Data'
+  requirements:
+    _entity_access: 'scraped_content.delete'
+    scraped_content: \d+
+
+scraped_content.table_list:
+  path: '/scraped_content/entity-list'
+  defaults:
+    _controller: '\Drupal\web_scraper\Controller\ScrapedContentDataListing::build'
+    _title: 'Scraped Content Data Listing'
+  requirements:
+    _permission: 'view scraped_content entity'

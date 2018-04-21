@@ -1,0 +1,11 @@
+#
+#  For more information on *.links.action.yml
+#  @see: https://www.drupal.org/node/2007444
+#        https://www.drupal.org/docs/8/api/menu-api/providing-module-defined-actions
+#
+
+entity.scraped_content.add_form:
+  route_name: entity.scraped_content.add_form
+  title: 'Add Scraped Content Data'
+  appears_on:
+    - entity.scraped_content.collection

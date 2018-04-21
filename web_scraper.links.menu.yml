@@ -1,0 +1,11 @@
+#
+#  For more information on *.links.menu.yml
+#  @see: https://www.drupal.org/docs/8/api/menu-api/providing-module-defined-menu-links
+#        https://www.drupal.org/node/2228089
+#
+
+entity.scraped_content.collection:
+  title: 'Scraped Content Data'
+  route_name: entity.scraped_content.collection
+  parent: system.admin_structure
+  description: 'List and manage Scraped Content Data'

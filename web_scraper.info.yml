@@ -1,0 +1,5 @@
+name: Web Scraper
+type: module
+description: Scrapes content from web pages and populates a custom entity
+package: D8DQS
+core: 8.x

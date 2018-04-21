@@ -1,0 +1,13 @@
+#
+#  For more information on *.permissions.yml
+#  @see: https://www.drupal.org/node/2311427
+#
+
+'delete scraped_content entity':
+  title: Delete Scraped Content Data
+'add scraped_content entity':
+  title: Add Scraped Content Data
+'view scraped_content entity':
+  title: View Scraped Content Data
+'edit scraped_content entity':
+  title: Edit Scraped Content Data
