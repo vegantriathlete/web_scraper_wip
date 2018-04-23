@@ -78,43 +78,43 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
   /**
    * {@inheritdoc}
    */
-  public function getLabel() {
-    return $this->get('label')->value;
+  public function getHeadline() {
+    return $this->get('headline')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCoordinates() {
-    return $this->get('ot_coordinates')->value;
+  public function getArticleBody() {
+    return $this->get('article_body')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getDepth() {
-    return $this->get('ot_depth')->value;
+  public function getScrapedH1() {
+    return $this->get('scraped_h1')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getTemperature() {
-    return $this->get('ot_temperature')->value;
+  public function getScrapedTitle() {
+    return $this->get('scraped_title')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getReportedDate() {
-    return $this->get('ot_reported_date')->value;
+  public function getScrapedContent() {
+    return $this->get('scraped_content')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getReporter() {
-    return $this->get('ot_reporter')->value;
+  public function getEditor() {
+    return $this->get('editor')->value;
   }
 
   /**
@@ -162,9 +162,9 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
  **                                                                          **
  ******************************************************************************/
 
-    $fields['label'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Label'))
-      ->setDescription(t('A human readable label used to identify this record'))
+    $fields['headline'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Headline'))
+      ->setDescription(t('The editor-entered headline for the article'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
       ->setSetting('max_length', 255)
@@ -175,9 +175,10 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 1,
       ]);
 
-    $fields['ot_coordinates'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Coordinates'))
-      ->setDescription(t('The Latitude and Longitude where the data was reported'))
+    // @todo: change this to a text area
+    $fields['article_body'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Article Body'))
+      ->setDescription(t('The editor-entered body for the article'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
       ->setSetting('max_length', 255)
@@ -188,21 +189,12 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 2,
       ]);
 
-/******************************************************************************
- **                                                                          **
- ** Since we are running the label and description through t() it's possible **
- ** to specify a different unit of measure in different languages. We don't  **
- ** want to use ->setSetting('suffix', ' ft') because we haven't made the    **
- ** entity fieldable, which means there is no way to translate the suffix.   **
- ** It is still possible to navigate to admin/config/regional/translate to   **
- ** change the label and description.                                        **
- **                                                                          **
- ******************************************************************************/
-    $fields['ot_depth'] = BaseFieldDefinition::create('float')
-      ->setLabel(t('Depth (ft)'))
-      ->setDescription(t('The depth at which the reading was taken measured in feet'))
+    $fields['editor'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Editor'))
+      ->setDescription(t('The editor of the article'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
+      ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
         'weight' => 3,
       ])
@@ -210,18 +202,12 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 3,
       ]);
 
-/******************************************************************************
- **                                                                          **
- ** We are using the same approach that we used for the depth measurement.   **
- ** The label and description are translatable through                       **
- ** admin/config/regional/translate                                          **
- **                                                                          **
- ******************************************************************************/
-    $fields['ot_temperature'] = BaseFieldDefinition::create('float')
-      ->setLabel(t('Temperature (Fahrenheit)'))
-      ->setDescription(t('The temperature measured in degrees Fahrenheit'))
+    $fields['status'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Article Status'))
+      ->setDescription(t('The status of the article'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
+      ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
         'weight' => 4,
       ])
@@ -229,24 +215,12 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 4,
       ]);
 
-/******************************************************************************
- **                                                                          **
- ** For the exercise we are going to set the date to be not translatable.    **
- ** There is a core bug that causes the label for the date to show the span  **
- ** tags.                                                                    **
- ** @see: https://www.drupal.org/node/2914464                                **
- **                                                                          **
- ** By setting this field to not be translatable we are removing the option  **
- ** to configure it through the interface; it will always be untranslatable. **
- ** We could choose to set it as translatable here and then still choose to  **
- ** not configure it as a translatable field through the interface.          **
- **                                                                          **
- ******************************************************************************/
-    $fields['ot_reported_date'] = BaseFieldDefinition::create('timestamp')
-      ->setLabel(t('Reported Date'))
-      ->setDescription(t('The unix timestamp of the reporting date'))
+    $fields['scraped_h1'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Scraped H1'))
+      ->setDescription(t('The H1 tag that was scraped from the source'))
       ->setRequired(TRUE)
       ->setTranslatable(FALSE)
+      ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
         'weight' => 5,
       ])
@@ -254,9 +228,10 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 5,
       ]);
 
-    $fields['ot_reporter'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Reporter'))
-      ->setDescription(t('The name of the person or organization that reported the data'))
+    // @todo: change this to a text area
+    $fields['scraped_content'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Scraped Content'))
+      ->setDescription(t('The content that was scraped from the source'))
       ->setRequired(TRUE)
       ->setTranslatable(FALSE)
       ->setSetting('max_length', 255)
@@ -265,6 +240,19 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
       ])
       ->setDisplayOptions('view', [
         'weight' => 6,
+      ]);
+
+    $fields['source'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Source'))
+      ->setDescription(t('The URL that was scraped'))
+      ->setRequired(TRUE)
+      ->setTranslatable(FALSE)
+      ->setSetting('max_length', 255)
+      ->setDisplayOptions('form', [
+        'weight' => 7,
+      ])
+      ->setDisplayOptions('view', [
+        'weight' => 7,
       ]);
 
     $fields['changed'] = BaseFieldDefinition::create('changed');
