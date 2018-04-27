@@ -175,13 +175,12 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 1,
       ]);
 
-    // @todo: change this to a text area
-    $fields['article_body'] = BaseFieldDefinition::create('string')
+    $fields['article_body'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Article Body'))
       ->setDescription(t('The editor-entered body for the article'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
-      ->setSetting('max_length', 255)
+      ->setSetting('text_processing', 0)
       ->setDisplayOptions('form', [
         'weight' => 2,
       ])
@@ -228,13 +227,12 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 5,
       ]);
 
-    // @todo: change this to a text area
-    $fields['scraped_content'] = BaseFieldDefinition::create('string')
+    $fields['scraped_content'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Scraped Content'))
       ->setDescription(t('The content that was scraped from the source'))
       ->setRequired(TRUE)
       ->setTranslatable(FALSE)
-      ->setSetting('max_length', 255)
+      ->setSetting('text_processing', 0)
       ->setDisplayOptions('form', [
         'weight' => 6,
       ])
