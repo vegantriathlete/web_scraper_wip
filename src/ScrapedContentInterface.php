@@ -4,6 +4,7 @@ namespace Drupal\web_scraper;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
+use Drupal\user\UserInterface;
 
 /******************************************************************************
  **                                                                          **
@@ -31,6 +32,14 @@ interface ScrapedContentInterface extends ContentEntityInterface, EntityChangedI
   public function getArticleBody();
 
   /**
+   * Gets the article status.
+   *
+   * @return string
+   *   The status.
+   */
+  public function getArticleStatus();
+
+  /**
    * Gets the created time.
    *
    * @return int
@@ -39,12 +48,21 @@ interface ScrapedContentInterface extends ContentEntityInterface, EntityChangedI
   public function getCreatedTime();
 
   /**
-   * Gets the article editor.
+   * Gets the article's editor entity.
    *
-   * @return string
-   *   The name of the editor.
+   * @return \Drupal\user\UserInterface
+   *   The editor user entity.
    */
   public function getEditor();
+
+  /**
+   * Returns the entity editor's user ID.
+   *
+   * @return int|null
+   *   The editor user ID, or NULL in case the user ID field has not been set on
+   *   the entity.
+   */
+  public function getEditorId();
 
   /**
    * Gets the article headline
@@ -87,14 +105,6 @@ interface ScrapedContentInterface extends ContentEntityInterface, EntityChangedI
   public function getSource();
 
   /**
-   * Gets the article status.
-   *
-   * @return string
-   *   The status.
-   */
-  public function getStatus();
-
-  /**
    * Sets the article body.
    *
    * @param string $body_text
@@ -106,15 +116,38 @@ interface ScrapedContentInterface extends ContentEntityInterface, EntityChangedI
   public function setArticleBody($body_text);
 
   /**
-   * Sets the editor's name.
+   * Sets the article status.
    *
-   * @param string $name
-   *   The name of the editor.
+   * @param string $status
+   *   The status of the article.
+   *   [scraped | published | rejected ]
    *
    * @return \Drupal\web_scraper\ScrapedContentInterface
    *   The updated entity.
    */
-  public function setEditor($name);
+  public function setArticleStatus($status);
+
+  /**
+   * Sets the entity editor's user entity.
+   *
+   * @param \Drupal\user\UserInterface $account
+   *   The editor user entity.
+   *
+   * @return \Drupal\web_scraper\ScrapedContentInterface
+   *   The updated entity.
+   */
+  public function setEditor(UserInterface $account);
+
+  /**
+   * Sets the entity editor's user ID.
+   *
+   * @param int $uid
+   *   The editor user id.
+   *
+   * @return \Drupal\web_scraper\ScrapedContentInterface
+   *   The updated entity.
+   */
+  public function setEditorId($uid);
 
   /**
    * Sets the headline.
@@ -126,17 +159,5 @@ interface ScrapedContentInterface extends ContentEntityInterface, EntityChangedI
    *   The updated entity.
    */
   public function setHeadline($headline);
-
-  /**
-   * Sets the article status.
-   *
-   * @param string $status
-   *   The status of the article.
-   *   [scraped | published | rejected ]
-   *
-   * @return \Drupal\web_scraper\ScrapedContentInterface
-   *   The updated entity.
-   */
-  public function setStatus($status);
 
 }

@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\user\UserInterface;
 use Drupal\web_scraper\ScrapedContentInterface;
 
 /******************************************************************************
@@ -82,6 +83,13 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
     return $this->get('article_body')->value;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getArticleStatus() {
+    return $this->get('article_status')->value;
+  }
+
 /******************************************************************************
  **                                                                          **
  ** The EntityChangedTrait already provides the method for getChangedTime.   **
@@ -99,7 +107,14 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
    * {@inheritdoc}
    */
   public function getEditor() {
-    return $this->get('editor')->value;
+    return $this->get('editor')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEditorId() {
+    return $this->get('editor')->target_id;
   }
 
   /**
@@ -140,13 +155,6 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
   /**
    * {@inheritdoc}
    */
-  public function getStatus() {
-    return $this->get('status')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function setArticleBody($body_text) {
     $this->set('article_body', $body_text);
     return $this;
@@ -155,8 +163,24 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
   /**
    * {@inheritdoc}
    */
-  public function setEditor($name) {
-    $this->get('editor', $name);
+  public function setArticleStatus($status) {
+    $this->set('article_status', $status);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setEditor(UserInterface $account) {
+    $this->set('editor', $account->id());
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setEditorId($uid) {
+    $this->set('editor', $uid);
     return $this;
   }
 
@@ -165,14 +189,6 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
    */
   public function setHeadline($headline) {
     $this->set('headline', $headline);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setStatus($status) {
-    $this->set('status', $status);
     return $this;
   }
 
@@ -240,21 +256,33 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 2,
       ]);
 
-    // @todo: Should I make this an entity reference to a user?
-    $fields['editor'] = BaseFieldDefinition::create('string')
+/******************************************************************************
+ **                                                                          **
+ ** @see: core/modules/node/src/Entity/Node.php                              **
+ **                                                                          **
+ ******************************************************************************/
+    $fields['editor'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Editor'))
       ->setDescription(t('The editor of the article'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
-      ->setSetting('max_length', 255)
+      ->setSetting('handler', 'default')
+      ->setSetting('target_type', 'user')
       ->setDisplayOptions('form', [
+        'settings' => [
+          'match_operator' => 'CONTAINS',
+          'size' => '60',
+          'placeholder' => '',
+        ],
+        'type' => 'entity_reference_autocomplete',
         'weight' => 3,
       ])
       ->setDisplayOptions('view', [
+        'type' => 'author',
         'weight' => 3,
       ]);
 
-    $fields['status'] = BaseFieldDefinition::create('list_string')
+    $fields['article_status'] = BaseFieldDefinition::create('list_string')
       ->setLabel(t('Article Status'))
       ->setDescription(t('The status of the article'))
       ->setRequired(TRUE)
@@ -262,9 +290,11 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
       ->setSetting('max_length', 255)
       ->setSetting('allowed_values', ['scraped' => 'Scraped from Source', 'published' => 'Ready for use', 'rejected' => 'Not usable'])
       ->setDisplayOptions('form', [
+        'type' => 'options_select',
         'weight' => 4,
       ])
       ->setDisplayOptions('view', [
+        'type' => 'string',
         'weight' => 4,
       ]);
 
