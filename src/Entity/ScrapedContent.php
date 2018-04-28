@@ -37,6 +37,10 @@ use Drupal\web_scraper\ScrapedContentInterface;
  **   interface. (Note: If we wanted it to be fieldable we would have had to **
  **   add the field_ui_base_route attribute in the annotation.)              **
  **                                                                          **
+ ** We haven't defined the list_cache_tags key. Instead we are allowing      **
+ ** core/lib/Drupal/Core/Entity/EntityType.php to default it for us, which   **
+ ** will result in a tag of scraped_content_list being created.              **
+ ** @see \Drupal\Core\Entity\EntityType::__construct                         **
  ******************************************************************************/
 
 /**
