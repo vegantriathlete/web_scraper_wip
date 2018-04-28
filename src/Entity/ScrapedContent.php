@@ -104,6 +104,18 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
   }
 
   /**
+   * Default value callback for 'editor' base field definition.
+   *
+   * @see ::baseFieldDefinitions()
+   *
+   * @return int[]
+   *   An array of default values.
+   */
+  public static function getCurrentUserId() {
+    return [\Drupal::currentUser()->id()];
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getEditor() {
@@ -259,14 +271,15 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
 /******************************************************************************
  **                                                                          **
  ** @see: core/modules/node/src/Entity/Node.php                              **
+ **       core/modules/media/src/Entity/Media.php                            **
  **                                                                          **
  ******************************************************************************/
     $fields['editor'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Editor'))
       ->setDescription(t('The editor of the article'))
+      ->setDefaultValueCallback(static::class . '::getCurrentUserId')
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
-      ->setSetting('handler', 'default')
       ->setSetting('target_type', 'user')
       ->setDisplayOptions('form', [
         'settings' => [
