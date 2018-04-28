@@ -201,12 +201,13 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 3,
       ]);
 
-    $fields['status'] = BaseFieldDefinition::create('string')
+    $fields['status'] = BaseFieldDefinition::create('list_string')
       ->setLabel(t('Article Status'))
       ->setDescription(t('The status of the article'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
+      ->setTranslatable(FALSE)
       ->setSetting('max_length', 255)
+      ->setSetting('allowed_values', ['scraped' => 'Scraped from Source', 'published' => 'Ready for use', 'rejected' => 'Not usable'])
       ->setDisplayOptions('form', [
         'weight' => 4,
       ])
