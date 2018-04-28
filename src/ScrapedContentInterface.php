@@ -23,51 +23,120 @@ use Drupal\Core\Entity\EntityChangedInterface;
 interface ScrapedContentInterface extends ContentEntityInterface, EntityChangedInterface {
 
   /**
-   * Gets the label of the entity.
+   * Gets the edited article body.
    *
    * @return string
-   *   The label of the entity.
+   *   The body text.
    */
-  public function getLabel();
+  public function getArticleBody();
 
   /**
-   * Gets the coordinates.
+   * Gets the created time.
+   *
+   * @return int
+   *   The creation timestamp of the scraped content.
+   */
+  public function getCreatedTime();
+
+  /**
+   * Gets the article editor.
    *
    * @return string
-   *   The latitude and longitude where the measurement was taken.
+   *   The name of the editor.
    */
-  public function getCoordinates();
+  public function getEditor();
 
   /**
-   * Gets the depth.
-   *
-   * @return float
-   *   The depth at which the measurement was taken.
-   */
-  public function getDepth();
-
-  /**
-   * Gets the temperature.
-   *
-   * @return float
-   *   The measured temperature.
-   */
-  public function getTemperature();
-
-  /**
-   * Gets the reported date.
-   *
-   * @return integer
-   *   The unix timestamp of when the measurement was taken.
-   */
-  public function getReportedDate();
-
-  /**
-   * Gets the reporter.
+   * Gets the article headline
    *
    * @return string
-   *   The name of the person or organization reporting the data.
+   *   The headline.
    */
-  public function getReporter();
+  public function getHeadline();
+
+  /**
+   * Gets the scraped content.
+   *
+   * @return string
+   *   The scraped content.
+   */
+  public function getScrapedContent();
+
+  /**
+   * Gets the scraped h1.
+   *
+   * @return string
+   *   The scraped h1.
+   */
+  public function getScrapedH1();
+
+  /**
+   * Gets the scraped title.
+   *
+   * @return string
+   *   The scraped title.
+   */
+  public function getScrapedTitle();
+
+  /**
+   * Gets the source URL.
+   *
+   * @return string
+   *   The source.
+   */
+  public function getSource();
+
+  /**
+   * Gets the article status.
+   *
+   * @return string
+   *   The status.
+   */
+  public function getStatus();
+
+  /**
+   * Sets the article body.
+   *
+   * @param string $body_text
+   *   The edited body text for the article.
+   *
+   * @return \Drupal\web_scraper\ScrapedContentInterface
+   *   The updated entity.
+   */
+  public function setArticleBody($body_text);
+
+  /**
+   * Sets the editor's name.
+   *
+   * @param string $name
+   *   The name of the editor.
+   *
+   * @return \Drupal\web_scraper\ScrapedContentInterface
+   *   The updated entity.
+   */
+  public function setEditor($name);
+
+  /**
+   * Sets the headline.
+   *
+   * @param string $headline
+   *   The headline of the article.
+   *
+   * @return \Drupal\web_scraper\ScrapedContentInterface
+   *   The updated entity.
+   */
+  public function setHeadline($headline);
+
+  /**
+   * Sets the article status.
+   *
+   * @param string $status
+   *   The status of the article.
+   *   [scraped | published | rejected ]
+   *
+   * @return \Drupal\web_scraper\ScrapedContentInterface
+   *   The updated entity.
+   */
+  public function setStatus($status);
 
 }

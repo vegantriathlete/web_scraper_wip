@@ -78,6 +78,33 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
   /**
    * {@inheritdoc}
    */
+  public function getArticleBody() {
+    return $this->get('article_body')->value;
+  }
+
+/******************************************************************************
+ **                                                                          **
+ ** The EntityChangedTrait already provides the method for getChangedTime.   **
+ **                                                                          **
+ ******************************************************************************/
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCreatedTime() {
+    return $this->get('created')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEditor() {
+    return $this->get('editor')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getHeadline() {
     return $this->get('headline')->value;
   }
@@ -85,8 +112,8 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
   /**
    * {@inheritdoc}
    */
-  public function getArticleBody() {
-    return $this->get('article_body')->value;
+  public function getScrapedContent() {
+    return $this->get('scraped_content')->value;
   }
 
   /**
@@ -106,22 +133,47 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
   /**
    * {@inheritdoc}
    */
-  public function getScrapedContent() {
-    return $this->get('scraped_content')->value;
+  public function getSource() {
+    return $this->get('source')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getEditor() {
-    return $this->get('editor')->value;
+  public function getStatus() {
+    return $this->get('status')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCreatedTime() {
-    return $this->get('created')->value;
+  public function setArticleBody($body_text) {
+    $this->set('article_body', $body_text);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setEditor($name) {
+    $this->get('editor', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setHeadline($headline) {
+    $this->set('headline', $headline);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setStatus($status) {
+    $this->set('status', $status);
+    return $this;
   }
 
   /**
@@ -188,6 +240,7 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 2,
       ]);
 
+    // @todo: Should I make this an entity reference to a user?
     $fields['editor'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Editor'))
       ->setDescription(t('The editor of the article'))
@@ -216,8 +269,21 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
       ]);
 
     $fields['scraped_h1'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Scraped H1'))
-      ->setDescription(t('The H1 tag that was scraped from the source'))
+      ->setLabel(t('Scraped h1'))
+      ->setDescription(t('The h1 tag that was scraped from the source'))
+      ->setRequired(TRUE)
+      ->setTranslatable(FALSE)
+      ->setSetting('max_length', 255)
+      ->setDisplayOptions('form', [
+        'weight' => 5,
+      ])
+      ->setDisplayOptions('view', [
+        'weight' => 5,
+      ]);
+
+    $fields['scraped_title'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Scraped title'))
+      ->setDescription(t('The title tag that was scraped from the source'))
       ->setRequired(TRUE)
       ->setTranslatable(FALSE)
       ->setSetting('max_length', 255)
