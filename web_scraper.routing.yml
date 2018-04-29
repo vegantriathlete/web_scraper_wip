@@ -53,7 +53,7 @@ entity.scraped_content.delete_form:
 scraped_content.table_list:
   path: '/scraped_content/entity-list'
   defaults:
-    _controller: '\Drupal\web_scraper\Controller\ScrapedContentDataListing::build'
+    _controller: '\Drupal\web_scraper\Controller\ScrapedContentListing::build'
     _title: 'Scraped Content Data Listing'
   requirements:
     _permission: 'view scraped_content entity'

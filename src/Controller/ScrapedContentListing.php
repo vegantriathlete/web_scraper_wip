@@ -5,7 +5,6 @@ namespace Drupal\web_scraper\Controller;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -31,26 +30,16 @@ class ScrapedContentListing extends ControllerBase {
   protected $currentLanguage;
 
   /**
-   * The date formatter service.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
-   */
-  protected $dateFormatter;
-
-  /**
    * Constructs the controller
    *
    * @param \Drupal\Core\Database\Connection $database
    *   A database connection object.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
-   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
-   *   The language manager.
    */
-  public function __construct(Connection $database, LanguageManagerInterface $language_manager, DateFormatterInterface $date_formatter) {
+  public function __construct(Connection $database, LanguageManagerInterface $language_manager) {
     $this->database = $database;
     $this->currentLanguage = $language_manager->getCurrentLanguage();
-    $this->dateFormatter = $date_formatter;
   }
 
   /**
@@ -59,8 +48,7 @@ class ScrapedContentListing extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('database'),
-      $container->get('language_manager'),
-      $container->get('date.formatter')
+      $container->get('language_manager')
     );
   }
 
@@ -101,7 +89,7 @@ class ScrapedContentListing extends ControllerBase {
         'data' => [
           Link::fromTextAndUrl($result->headline, $url)->toString(),
           $result->article_status,
-          Html::escape($result->editor->getDisplayName())
+          Html::escape($result->editor)
         ]
       ];
     }
