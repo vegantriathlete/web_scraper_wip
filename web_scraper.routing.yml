@@ -22,7 +22,7 @@ entity.scraped_content.collection:
     _entity_list: 'scraped_content'
     _title: 'Scraped Content Data'
   requirements:
-    _permission: 'view scraped_content entity'
+    _permission: 'edit scraped_content entity'
 
 entity.scraped_content.add_form:
   path: '/scraped_content/add'

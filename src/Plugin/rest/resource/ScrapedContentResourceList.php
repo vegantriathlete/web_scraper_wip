@@ -91,14 +91,15 @@ class ScrapedContentResourceList extends ResourceBase {
 
 /******************************************************************************
  **                                                                          **
- ** We are just retrieving all of the ocean temperature data items. In a     **
+ ** We are just retrieving all of the scraped content items. In a     **
  ** real situation we would do something to filter and sort them by some     **
  ** criteria the request passed.                                             **
  **                                                                          **
  ******************************************************************************/
+    // @todo: Don't retrieve all of the scraped content items; use filters
     $result = $this->scrapedContentStorage->getQuery()
       ->condition('langcode', $this->currentLanguage->getId())
-      ->sort('label', 'ASC')
+      ->sort('headline', 'ASC')
       ->execute();
 
     if ($result) {
@@ -110,7 +111,7 @@ class ScrapedContentResourceList extends ResourceBase {
         if ($itemAccess->isAllowed()) {
           $record[] = [
             'id' => $item->id->value,
-            'label' => $translatedItem->getLabel()
+            'headline' => $translatedItem->getHeadline()
           ];
         }
       }

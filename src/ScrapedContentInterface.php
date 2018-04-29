@@ -56,7 +56,7 @@ interface ScrapedContentInterface extends ContentEntityInterface, EntityChangedI
   public function getEditor();
 
   /**
-   * Returns the entity editor's user ID.
+   * Gets the entity editor's user ID.
    *
    * @return int|null
    *   The editor user ID, or NULL in case the user ID field has not been set on

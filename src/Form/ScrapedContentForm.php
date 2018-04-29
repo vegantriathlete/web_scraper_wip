@@ -19,7 +19,7 @@ use Drupal\Core\Form\FormStateInterface;
  ******************************************************************************/
 
 /**
- * Manages add and edit forms for IAI Ocean Temperature entity
+ * Manages add and edit forms for Scraped Content entity
  */
 class ScrapedContentForm extends ContentEntityForm {
 

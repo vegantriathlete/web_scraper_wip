@@ -77,21 +77,18 @@ class ScrapedContentListing extends ControllerBase {
     $query->condition('langcode', $langcode);
     $query->fields('sc', [
       'id',
-      'label',
-      'ot_coordinates',
-      'ot_depth',
-      'ot_temperature',
-      'ot_reported_date'
+      'headline',
+      'article_status',
+      'editor'
     ]);
 
     $header = [
-      ['data' => $this->t('Label'), 'field' => 'label', 'sort' => 'asc'],
-      ['data' => $this->t('Coordinates'), 'field' => 'ot_coordinates'],
-      ['data' => $this->t('Depth'), 'field' => 'ot_depth'],
-      ['data' => $this->t('Temperature'), 'field' => 'ot_temperature'],
-      ['data' => $this->t('Reported'), 'field' => 'ot_reported_date']
+      ['data' => $this->t('Headline'), 'field' => 'headline', 'sort' => 'asc'],
+      ['data' => $this->t('Status'), 'field' => 'article_status'],
+      ['data' => $this->t('Editor'), 'field' => 'editor']
     ];
 
+    // @todo: Make the limit configurable
     $results = $query
       ->limit(3)
       ->orderByHeader($header)
@@ -102,11 +99,9 @@ class ScrapedContentListing extends ControllerBase {
       $url = Url::fromRoute('entity.scraped_content.canonical', array('scraped_content' => $result->id));
       $rows[] = [
         'data' => [
-          Link::fromTextAndUrl($result->label, $url)->toString(),
-          Html::escape($result->ot_coordinates),
-          $result->ot_depth,
-          $result->ot_temperature,
-          $this->dateFormatter->format($result->ot_reported_date)
+          Link::fromTextAndUrl($result->headline, $url)->toString(),
+          $result->article_status,
+          Html::escape($result->editor->getDisplayName())
         ]
       ];
     }

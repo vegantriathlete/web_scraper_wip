@@ -2,7 +2,6 @@
 
 namespace Drupal\web_scraper\Plugin\rest\resource;
 
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -61,13 +60,6 @@ class ScrapedContentResource extends ResourceBase {
   protected $dataValidationService;
 
   /**
-   * The date formatter service.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
-   */
-  protected $dateFormatter;
-
-  /**
    * Constructs a Drupal\web_scraper\Plugin\rest\resource\ScrapedContentResource object.
    *
    * @param array $configuration
@@ -88,16 +80,13 @@ class ScrapedContentResource extends ResourceBase {
    *   The currently logged in user.
    * @param \Drupal\web_scraper\ScrapedContentDataValidationInterface $data_validation_service
    *   The data validation service.
-   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
-   *   The date formatter service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, $serializer_formats, LoggerInterface $logger, LanguageManagerInterface $language_manager, AccountInterface $current_user, ScrapedContentDataValidationInterface $data_validation_service, DateFormatterInterface $date_formatter) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, $serializer_formats, LoggerInterface $logger, LanguageManagerInterface $language_manager, AccountInterface $current_user, ScrapedContentDataValidationInterface $data_validation_service) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
     $this->currentLanguage = $language_manager->getCurrentLanguage();
     $this->languageManager = $language_manager;
     $this->currentUser = $current_user;
     $this->dataValidationService = $data_validation_service;
-    $this->dateFormatter = $date_formatter;
   }
 
   /**
@@ -114,8 +103,7 @@ class ScrapedContentResource extends ResourceBase {
       $container->get('logger.factory')->get('rest'),
       $container->get('language_manager'),
       $container->get('current_user'),
-      $container->get('web_scraper.data_validation_service'),
-      $container->get('date.formatter')
+      $container->get('web_scraper.data_validation_service')
     );
   }
 
@@ -141,12 +129,9 @@ class ScrapedContentResource extends ResourceBase {
         throw new AccessDeniedHttpException();
       }
       $record = [
-        'label' => $translatedScrapedContent->getLabel(),
-        'coordinates' => $translatedOceanTemperatureData->getCoordinates(),
-        'depth' => $translatedOceanTemperatureData->getDepth(),
-        'temperature' => $translatedOceanTemperatureData->getTemperature(),
-        'date' => $this->dateFormatter->format($translatedOceanTemperatureData->getReportedDate()),
-        'reporter' => $translatedScrapedContent->getReporter()
+        'headline' => $translatedScrapedContent->getHeadline(),
+        'status' => $translatedScrapedContent->getArticleStatus(),
+        'editor' => $translatedScrapedContent->getEditor()->getDisplayName()
       ];
     }
 
@@ -189,16 +174,10 @@ class ScrapedContentResource extends ResourceBase {
     if (!$this->dataValidationService->hasRequiredFields($data)) {
       $dataIsValid = FALSE;
     }
-    elseif (!$this->dataValidationService->isValidCoordinates($data['coordinates'])) {
+    elseif (!$this->dataValidationService->isValidStatus($data['status'])) {
       $dataIsValid = FALSE;
     }
-    elseif (!$this->dataValidationService->isValidDepth($data['depth'])) {
-      $dataIsValid = FALSE;
-    }
-    elseif (!$this->dataValidationService->isValidTemperature($data['temperature'])) {
-      $dataIsValid = FALSE;
-    }
-    elseif (!$this->dataValidationService->isValidDate($data['date'])) {
+    elseif (!$this->dataValidationService->isValidEditor($data['editor'])) {
       $dataIsValid = FALSE;
     }
     else {
@@ -207,13 +186,11 @@ class ScrapedContentResource extends ResourceBase {
     if ($dataIsValid) {
       $scrapedContentItem = ScrapedContent::create(
         array(
-          'label' => $data['label'],
+          'headline' => $data['headline'],
           'langcode' => $data['language_code'],
-          'ot_coordinates' => $data['coordinates'],
-          'ot_depth' => $data['depth'],
-          'ot_temperature' => $data['temperature'],
-          'ot_reported_date' => $data['date'],
-          'ot_reporter' => $data['reporter']
+          'article_status' => $data['status'],
+          'editor' => $data['editor'],
+          'article_body' => $data['body']
         )
       );
       try {

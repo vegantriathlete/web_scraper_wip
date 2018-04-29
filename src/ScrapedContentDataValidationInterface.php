@@ -20,41 +20,21 @@ interface ScrapedContentDataValidationInterface {
   /**
    * Validate coordinates
    *
-   * @param string $ot_coordinates
-   *   The latitude and longitude at which the reading was taken
+   * @param string $status
+   *   The status of the article
    *
    * @return boolean
    */
-  public function isValidCoordinates($ot_coordinates);
+  public function isValidStatus($status);
 
   /**
-   * Validate depth
+   * Validate editor
    *
-   * @param float $ot_depth
-   *   The depth at which the reading was taken
-   *
-   * @return boolean
-   */
-  public function isValidDepth($ot_depth);
-
-  /**
-   * Validate temperature
-   *
-   * @param float $ot_temperature
-   *   The measured temperature
+   * @param int $editor
+   *   The uid of the editor
    *
    * @return boolean
    */
-  public function isValidTemperature($ot_temperature);
-
-  /**
-   * Validate reporting date
-   *
-   * @param int $ot_reported_date
-   *   The date on which the reading was taken
-   *
-   * @return boolean
-   */
-  public function isValidDate($ot_reported_date);
+  public function isValidEditor($editor);
 
 }

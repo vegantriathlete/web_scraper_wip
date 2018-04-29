@@ -61,9 +61,9 @@ class ScrapedContentViewsData extends EntityViewsData {
       ],
     ];
 
-    $data['scraped_content']['label'] = [
-      'title' => $this->t('Scraped Content Label'),
-      'help' => $this->t('The label that was assigned to this record'),
+    $data['scraped_content']['headline'] = [
+      'title' => $this->t('Headline'),
+      'help' => $this->t('The headline that was assigned to the article'),
       'field' => [
         'id' => 'standard',
       ],
@@ -75,9 +75,9 @@ class ScrapedContentViewsData extends EntityViewsData {
       ],
     ];
 
-    $data['scraped_content']['ot_coordinates'] = [
-      'title' => $this->t('Scraped Content Coordinates'),
-      'help' => $this->t('The latitude and longitude where the measurement was taken'),
+    $data['scraped_content']['article_body'] = [
+      'title' => $this->t('Body'),
+      'help' => $this->t('The body that was assigned to the article'),
       'field' => [
         'id' => 'standard',
       ],
@@ -92,68 +92,34 @@ class ScrapedContentViewsData extends EntityViewsData {
       ],
     ];
 
-    $data['scraped_content']['ot_depth'] = [
-      'title' => $this->t('Scraped Content Depth'),
-      'help' => $this->t('The depth at which the measurement was taken'),
+    $data['scraped_content']['article_status'] = [
+      'title' => $this->t('Status'),
+      'help' => $this->t('The status of the article'),
       'field' => [
-        'id' => 'numeric',
+        'id' => 'standard',
       ],
       'argument' => [
-        'id' => 'numeric',
+        'id' => 'string_list_field',
       ],
       'filter' => [
-        'id' => 'numeric',
+        'id' => 'list_field',
       ],
       'sort' => [
         'id' => 'standard',
       ],
     ];
 
-    $data['scraped_content']['ot_temperature'] = [
-      'title' => $this->t('Scraped Content Temperature'),
-      'help' => $this->t('The temperature that was reported'),
+    $data['scraped_content']['editor'] = [
+      'title' => $this->t('Editor'),
+      'help' => $this->t('The editor of the article'),
       'field' => [
-        'id' => 'numeric',
+        'id' => 'user_data',
       ],
       'argument' => [
-        'id' => 'numeric',
+        'id' => 'user_uid',
       ],
       'filter' => [
-        'id' => 'numeric',
-      ],
-      'sort' => [
-        'id' => 'standard',
-      ],
-    ];
-
-    $data['scraped_content']['ot_reported_date'] = [
-      'title' => $this->t('Scraped Content Reported Date'),
-      'help' => $this->t('The date that temperature that was reported'),
-      'field' => [
-        'id' => 'date',
-      ],
-      'argument' => [
-        'id' => 'date',
-      ],
-      'filter' => [
-        'id' => 'date',
-      ],
-      'sort' => [
-        'id' => 'date',
-      ],
-    ];
-
-    $data['scraped_content']['ot_reporter'] = [
-      'title' => $this->t('Scraped Content Reporter'),
-      'help' => $this->t('The name of the person or organization that reported the data'),
-      'field' => [
-        'id' => 'standard',
-      ],
-      'argument' => [
-        'id' => 'string',
-      ],
-      'filter' => [
-        'id' => 'string',
+        'id' => 'user_name',
       ],
       'sort' => [
         'id' => 'standard',
