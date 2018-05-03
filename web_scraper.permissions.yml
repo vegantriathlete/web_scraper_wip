@@ -11,3 +11,5 @@
   title: View Scraped Content Data
 'edit scraped_content entity':
   title: Edit Scraped Content Data
+'submit scraped_content url':
+  title: Submit URL to Scrape Content

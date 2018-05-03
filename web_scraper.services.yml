@@ -1,3 +1,5 @@
 services:
   scraped_content.data_validation_service:
     class: Drupal\web_scraper\ScrapedContentDataValidationService
+  web_scraper.web_scraper:
+    class: Drupal\web_scraper\WebScraperService

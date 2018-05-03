@@ -57,3 +57,11 @@ scraped_content.table_list:
     _title: 'Scraped Content Data Listing'
   requirements:
     _permission: 'view scraped_content entity'
+
+scraped_content.submit_url:
+  path: '/admin/config/services/web_scraper/submit-url'
+  defaults:
+    _form: '\Drupal\web_scraper\Form\SubmitUrl'
+    _title: 'Submit a URL to scrape'
+  requirements:
+    _permission: 'submit scraped_content url'
