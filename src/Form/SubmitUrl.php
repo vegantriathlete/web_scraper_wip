@@ -11,14 +11,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SubmitUrl extends FormBase {
 
   /**
-   * The HTTP client to fetch the feed data with.
+   * The HTTP client to fetch the URL with.
    *
    * @var \GuzzleHttp\ClientInterface
    */
   protected $httpClient;
 
   /**
-   * The feed storage.
+   * The Web Scraper service
    *
    * @var \Drupal\web_scraper\WebScraperInterface
    */
