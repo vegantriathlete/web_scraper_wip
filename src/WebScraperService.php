@@ -58,7 +58,7 @@ class WebScraperService implements WebScraperInterface {
    * {@inheritdoc}
    */
   public function addArticle($data, $source) {
-    if ($this->dataValidationService->hasRequiredFields($data) {
+    if ($this->dataValidationService->scrapedDataHasRequiredFields($data)) {
       $parsed_data['scraped_h1'] = $this->parseH1($data);
       $parsed_data['scraped_title'] = $this->parseTitle($data);
       $parsed_data['scraped_content'] = $this->parseContent($data);
@@ -79,8 +79,7 @@ class WebScraperService implements WebScraperInterface {
         $scrapedArticleItem->save();
         $this->loggerFactory->get('web_scraper')
           ->notice('Created Scraped Content item with ID %id.', ['%id' => $scrapedArticleItem->id()]);
-        // @todo: add another method that calls this so that it's easy for me to unit test this method
-        drupal_set_message($this->t('Created Scraped Content item with ID $id.', ['%id' => $scrapedArticleItem->id()]), 'status');
+        $this->drupalSetMessage($this->t('Created Scraped Content item with ID %id.', ['%id' => $scrapedArticleItem->id()]), 'status'));
       }
       catch (EntityStorageException $e) {
         throw new HttpException(500, 'Internal Server Error', $e);
@@ -92,7 +91,43 @@ class WebScraperService implements WebScraperInterface {
   /**
    * {@inheritdoc}
    */
+  public function addArticleTranslation($data) {
+    if ($this->dataValidationService->translationDataHasRequiredFields($data) &&
+      $this->dataValidationService->sourceArticleExists($data) &&
+      $this->dataValidationService->translationDataIsValid($data)) {
+      $translatedArticleItem = ScrapedContent::addTranslation(
+        $data['language_code'],
+        [
+          'headline' => $data['headline'],
+          'article_body' => $data['article_body'],
+          'editor' => $data['editor'],
+          'article_status' => 'translated'
+        ]
+      );
+      try {
+        $translatedArticleItem->save();
+        $this->loggerFactory->get('web_scraper')
+          ->notice('Created Scraped Content translation for ID %id with language %language_code.', [
+            '%id' => $scrapedArticleItem->id(),
+            '%language_code' => $data['language_code']
+          ]);
+        $this->drupalSetMessage($this->t('Created Scraped Content translation for ID %id with language %language_code.', [
+          '%id' => $translatedArticleItem->id(),
+          '%language_code' => $data['language_code']
+        ]), 'status'));
+      }
+      catch (EntityStorageException $e) {
+        throw new HttpException(500, 'Internal Server Error', $e);
+      }
+      return $translatedArticleItem;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function parseContent($data) {
+    $content = 'content coming soon';
     return $content;
   }
 
@@ -100,6 +135,7 @@ class WebScraperService implements WebScraperInterface {
    * {@inheritdoc}
    */
   public function parseH1($data) {
+    $h1 = 'h1 coming soon';
     return $h1;
   }
 
@@ -107,7 +143,27 @@ class WebScraperService implements WebScraperInterface {
    * {@inheritdoc}
    */
   public function parseTitle($data) {
+    $title = 'title coming soon';
     return $title;
+  }
+
+/*****************************************************************************
+ **                                                                         **
+ ** We use this method so that it's easy to unit test our class. For testing**
+ ** we will create a helper class that extends this one. In that helper     **
+ ** class we will override this method so that it's a no-op method.         **
+ **                                                                         **
+ *****************************************************************************/
+  /**
+   * Sends a message using drupal_set_message().
+   *
+   * @param string $message
+   *   The message to send
+   * @param string $type
+   *   The message type
+   */
+  protected function drupalSetMessage($message, $type) {
+    drupal_set_message($message, $type);
   }
 
 }

@@ -8,17 +8,7 @@ namespace Drupal\web_scraper;
 interface ScrapedContentDataValidationInterface {
 
   /**
-   * Validate required fields
-   *
-   * @param array $data
-   *   The information that was passed
-   *
-   * @return boolean
-   */
-  public function hasRequiredFields($data);
-
-  /**
-   * Validate coordinates
+   * Validates the status
    *
    * @param string $status
    *   The status of the article
@@ -28,7 +18,7 @@ interface ScrapedContentDataValidationInterface {
   public function isValidStatus($status);
 
   /**
-   * Validate editor
+   * Validates the editor
    *
    * @param int $editor
    *   The uid of the editor
@@ -36,5 +26,15 @@ interface ScrapedContentDataValidationInterface {
    * @return boolean
    */
   public function isValidEditor($editor);
+
+  /**
+   * Validates the scraped data has required fields
+   *
+   * @param array $data
+   *   The information that was scraped
+   *
+   * @return boolean
+   */
+  public function scrapedDataHasRequiredFields($data);
 
 }

@@ -303,9 +303,9 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
       ->setLabel(t('Article Status'))
       ->setDescription(t('The status of the article'))
       ->setRequired(TRUE)
-      ->setTranslatable(FALSE)
+      ->setTranslatable(TRUE)
       ->setSetting('max_length', 255)
-      ->setSetting('allowed_values', ['scraped' => 'Scraped from Source', 'published' => 'Ready for use', 'rejected' => 'Not usable'])
+      ->setSetting('allowed_values', ['scraped' => 'Scraped from Source', 'translated' => 'Translation submitted for review', 'published' => 'Ready for use', 'rejected' => 'Not usable'])
       ->setDisplayOptions('form', [
         'type' => 'options_select',
         'weight' => 4,

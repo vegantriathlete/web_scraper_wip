@@ -10,21 +10,6 @@ class ScrapedContentDataValidationService implements ScrapedContentDataValidatio
   /**
    * {@inheritdoc}
    */
-  public function hasRequiredFields($data) {
-    if (isset($data['headline']) &&
-        isset($data['body']) &&
-        isset($data['status']) &&
-        isset($data['editor'])) {
-      return TRUE;
-    }
-    else {
-      return FALSE;
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function isValidStatus($status) {
     if ($status == 'scraped' || $status == 'published' || $status == 'rejected') {
       return TRUE;
@@ -41,6 +26,17 @@ class ScrapedContentDataValidationService implements ScrapedContentDataValidatio
       return TRUE;
     }
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function scrapedDataHasRequiredFields($data) {
+    return (strpos($data, '<h1>') !== FALSE &&
+      strpos($data, '<title>') !== FALSE &&
+      strpos($data, '<body>') !== FALSE &&
+      strpos($data, '<p>') !== FALSE)
+    );
   }
 
 }
