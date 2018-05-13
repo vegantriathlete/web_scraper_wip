@@ -235,6 +235,8 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
  **                                                                          **
  ** We must at least set the 'weight' attribute display option.              **
  ** @see: https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Field%21BaseFieldDefinition.php/function/BaseFieldDefinition%3A%3AsetDisplayOptions/8.5.x **
+ ** For a list of other display options                                      **
+ ** @see: https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Field%21FieldDefinitionInterface.php/function/FieldDefinitionInterface%3A%3AgetDisplayOptions/8.5.x **
  **                                                                          **
  ** If we wanted to use a different formatter we could specify the 'type'    **
  ** attribute for the display options for 'form'.                            **
@@ -256,6 +258,7 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 1,
       ])
       ->setDisplayOptions('view', [
+        'label' => 'hidden',
         'weight' => 1,
       ]);
 
@@ -269,6 +272,7 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 2,
       ])
       ->setDisplayOptions('view', [
+        'label' => 'hidden',
         'weight' => 2,
       ]);
 
