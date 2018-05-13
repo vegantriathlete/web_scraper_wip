@@ -98,7 +98,7 @@ class SubmitUrl extends FormBase {
       return;
     }
 
-    $this->web_scraper->addArticle($data, $form_state->getValue('source'));
+    $this->webScraper->addArticle($data, $form_state->getValue('source'));
     $form_state->setRedirect('scraped_content.table_list');
   }
 

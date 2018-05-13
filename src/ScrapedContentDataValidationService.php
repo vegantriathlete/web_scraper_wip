@@ -32,10 +32,10 @@ class ScrapedContentDataValidationService implements ScrapedContentDataValidatio
    * {@inheritdoc}
    */
   public function scrapedDataHasRequiredFields($data) {
-    return (strpos($data, '<h1>') !== FALSE &&
-      strpos($data, '<title>') !== FALSE &&
-      strpos($data, '<body>') !== FALSE &&
-      strpos($data, '<p>') !== FALSE)
+    return (strpos($data, '<h1') !== FALSE &&
+      strpos($data, '<title') !== FALSE &&
+      strpos($data, '<body') !== FALSE &&
+      strpos($data, '<p') !== FALSE
     );
   }
 

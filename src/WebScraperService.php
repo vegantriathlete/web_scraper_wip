@@ -79,7 +79,7 @@ class WebScraperService implements WebScraperInterface {
         $scrapedArticleItem->save();
         $this->loggerFactory->get('web_scraper')
           ->notice('Created Scraped Content item with ID %id.', ['%id' => $scrapedArticleItem->id()]);
-        $this->drupalSetMessage($this->t('Created Scraped Content item with ID %id.', ['%id' => $scrapedArticleItem->id()]), 'status'));
+        $this->drupalSetMessage($this->t('Created Scraped Content item with ID %id.', ['%id' => $scrapedArticleItem->id()]), 'status');
       }
       catch (EntityStorageException $e) {
         throw new HttpException(500, 'Internal Server Error', $e);
@@ -89,7 +89,7 @@ class WebScraperService implements WebScraperInterface {
     else {
       $this->loggerFactory->get('web_scraper')
         ->error('Could not create Scraped Content item with data: %data.', ['%data' => $data]);
-      $this->drupalSetMessage($this->t('Could not create Scraped Content item with data: %data.', ['%data' => $data]), 'error'));
+      $this->drupalSetMessage($this->t('Could not create Scraped Content item with data: %data.', ['%data' => $data]), 'error');
     }
   }
 
@@ -120,7 +120,7 @@ class WebScraperService implements WebScraperInterface {
         $this->drupalSetMessage($this->t('Created Scraped Content translation for ID %id with language %language_code.', [
           '%id' => $translatedArticleItem->id(),
           '%language_code' => $data['language_code']
-        ]), 'status'));
+        ]), 'status');
       }
       catch (EntityStorageException $e) {
         throw new HttpException(500, 'Internal Server Error', $e);
@@ -136,7 +136,7 @@ class WebScraperService implements WebScraperInterface {
       $this->drupalSetMessage($this->t('Could not create Scraped Content translation for ID %id with language %language_code.', [
         '%id' => $translatedArticleItem->id(),
         '%language_code' => $data['language_code']
-      ]), 'error'));
+      ]), 'error');
     }
   }
 
