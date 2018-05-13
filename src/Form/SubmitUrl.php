@@ -4,6 +4,7 @@ namespace Drupal\web_scraper\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\web_scraper\WebScraperInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -92,13 +93,32 @@ class SubmitUrl extends FormBase {
       $data = (string) $response->getBody();
     }
     catch (RequestException $e) {
-      $this->logger('web_scraper')->warning('Failed to scrape @url due to "%error".', ['@url' => $form_state->getValue('source'), '%error' => $e->getMessage()]);
-      drupal_set_message($this->t('Failed to scrape the URL due to "%error".', ['%error' => $e->getMessage()]));
+      $this->logger('web_scraper')->error('Failed to scrape @url due to "%error".', ['@url' => $form_state->getValue('source'), '%error' => $e->getMessage()]);
+      $this->drupalSetMessage($this->t('Failed to scrape the URL due to "%error".', ['%error' => $e->getMessage()]), 'error');
       return;
     }
 
     $this->web_scraper->addArticle($data, $form_state->getValue('source'));
     $form_state->setRedirect('scraped_content.table_list');
+  }
+
+/*****************************************************************************
+ **                                                                         **
+ ** We use this method so that it's easy to unit test our class. For testing**
+ ** we will create a helper class that extends this one. In that helper     **
+ ** class we will override this method so that it's a no-op method.         **
+ **                                                                         **
+ *****************************************************************************/
+  /**
+   * Sends a message using drupal_set_message().
+   *
+   * @param string $message
+   *   The message to send
+   * @param string $type
+   *   The message type
+   */
+  protected function drupalSetMessage($message, $type) {
+    drupal_set_message($message, $type);
   }
 
 }
