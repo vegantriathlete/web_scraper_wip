@@ -259,7 +259,7 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 1,
       ]);
 
-    $fields['article_body'] = BaseFieldDefinition::create('string_long')
+    $fields['article_body'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Article Body'))
       ->setDescription(t('The editor-entered body for the article'))
       ->setRequired(TRUE)
@@ -271,6 +271,13 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
       ->setDisplayOptions('view', [
         'weight' => 2,
       ]);
+
+/******************************************************************************
+ **                                                                          **
+ ** We don't want to see any of the other fields when we are viewing the     **
+ ** entity, so we won't set the display options for 'view'.                  **
+ **                                                                          **
+ ******************************************************************************/
 
 /******************************************************************************
  **                                                                          **
@@ -293,10 +300,6 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         ],
         'type' => 'entity_reference_autocomplete',
         'weight' => 3,
-      ])
-      ->setDisplayOptions('view', [
-        'type' => 'author',
-        'weight' => 3,
       ]);
 
     $fields['article_status'] = BaseFieldDefinition::create('list_string')
@@ -309,10 +312,6 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
       ->setDisplayOptions('form', [
         'type' => 'options_select',
         'weight' => 4,
-      ])
-      ->setDisplayOptions('view', [
-        'type' => 'string',
-        'weight' => 4,
       ]);
 
     $fields['scraped_h1'] = BaseFieldDefinition::create('string')
@@ -322,9 +321,6 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
       ->setTranslatable(FALSE)
       ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
-        'weight' => 5,
-      ])
-      ->setDisplayOptions('view', [
         'weight' => 5,
       ]);
 
@@ -336,9 +332,6 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
       ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
         'weight' => 5,
-      ])
-      ->setDisplayOptions('view', [
-        'weight' => 5,
       ]);
 
     $fields['scraped_content'] = BaseFieldDefinition::create('string_long')
@@ -349,9 +342,6 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
       ->setSetting('text_processing', 0)
       ->setDisplayOptions('form', [
         'weight' => 6,
-      ])
-      ->setDisplayOptions('view', [
-        'weight' => 6,
       ]);
 
     $fields['source'] = BaseFieldDefinition::create('string')
@@ -361,9 +351,6 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
       ->setTranslatable(FALSE)
       ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
-        'weight' => 7,
-      ])
-      ->setDisplayOptions('view', [
         'weight' => 7,
       ]);
 
