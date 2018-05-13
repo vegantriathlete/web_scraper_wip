@@ -144,7 +144,8 @@ class WebScraperService implements WebScraperInterface {
    * {@inheritdoc}
    */
   public function parseContent($data) {
-    $content = 'content coming soon';
+    preg_match('/<body(?:[\s\S[:alnum:]]*?)>([\s\S[:alnum:]]*?)<\/body>/', $data, $matches);
+    $content = $matches[1];
     return $content;
   }
 
@@ -152,7 +153,8 @@ class WebScraperService implements WebScraperInterface {
    * {@inheritdoc}
    */
   public function parseH1($data) {
-    $h1 = 'h1 coming soon';
+    preg_match('/<h1(?:[\s\S[:alnum:]]*?)>([\s\S[:alnum:]]*?)<\/h1>/', $data, $matches);
+    $h1 = $matches[1];
     return $h1;
   }
 
@@ -160,7 +162,8 @@ class WebScraperService implements WebScraperInterface {
    * {@inheritdoc}
    */
   public function parseTitle($data) {
-    $title = 'title coming soon';
+    preg_match('/<title(?:[\s\S[:alnum:]]*?)>([\s\S[:alnum:]]*?)<\/title>/', $data, $matches);
+    $title = $matches[1];
     return $title;
   }
 
