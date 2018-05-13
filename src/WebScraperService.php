@@ -86,6 +86,11 @@ class WebScraperService implements WebScraperInterface {
       }
       return $scrapedArticleItem;
     }
+    else {
+      $this->loggerFactory->get('web_scraper')
+        ->error('Could not create Scraped Content item with data: %data.', ['%data' => $data]);
+      $this->drupalSetMessage($this->t('Could not create Scraped Content item with data: %data.', ['%data' => $data]), 'error'));
+    }
   }
 
   /**
@@ -94,6 +99,7 @@ class WebScraperService implements WebScraperInterface {
   public function addArticleTranslation($data) {
     if ($this->dataValidationService->translationDataHasRequiredFields($data) &&
       $this->dataValidationService->sourceArticleExists($data) &&
+      $this->dataValidationService->translatedArticleDoesNotExist($data) &&
       $this->dataValidationService->translationDataIsValid($data)) {
       $translatedArticleItem = ScrapedContent::addTranslation(
         $data['language_code'],
@@ -120,6 +126,17 @@ class WebScraperService implements WebScraperInterface {
         throw new HttpException(500, 'Internal Server Error', $e);
       }
       return $translatedArticleItem;
+    }
+    else {
+      $this->loggerFactory->get('web_scraper')
+        ->error('Could not create Scraped Content translation for ID %id with language %language_code.', [
+          '%id' => $scrapedArticleItem->id(),
+          '%language_code' => $data['language_code']
+        ]);
+      $this->drupalSetMessage($this->t('Could not create Scraped Content translation for ID %id with language %language_code.', [
+        '%id' => $translatedArticleItem->id(),
+        '%language_code' => $data['language_code']
+      ]), 'error'));
     }
   }
 
