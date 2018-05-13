@@ -276,6 +276,19 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 2,
       ]);
 
+    $fields['source'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Source'))
+      ->setDescription(t('The URL that was scraped'))
+      ->setRequired(TRUE)
+      ->setTranslatable(FALSE)
+      ->setSetting('max_length', 255)
+      ->setDisplayOptions('form', [
+        'weight' => 7,
+      ])
+      ->setDisplayOptions('view', [
+        'weight' => 7,
+      ]);
+
 /******************************************************************************
  **                                                                          **
  ** We don't want to see any of the other fields when we are viewing the     **
@@ -346,16 +359,6 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
       ->setSetting('text_processing', 0)
       ->setDisplayOptions('form', [
         'weight' => 6,
-      ]);
-
-    $fields['source'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Source'))
-      ->setDescription(t('The URL that was scraped'))
-      ->setRequired(TRUE)
-      ->setTranslatable(FALSE)
-      ->setSetting('max_length', 255)
-      ->setDisplayOptions('form', [
-        'weight' => 7,
       ]);
 
     $fields['changed'] = BaseFieldDefinition::create('changed');
