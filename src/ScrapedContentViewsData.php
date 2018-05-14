@@ -22,8 +22,8 @@ class ScrapedContentViewsData extends EntityViewsData {
   public function getViewsData() {
     $data = parent::getViewsData();
 
-    $data['scraped_content']['table']['group'] = $this->t('Scraped Content Table');
-    $data['scraped_content']['table']['base'] = [
+    $data['scraped_content_field_data']['table']['group'] = $this->t('Scraped Content Table');
+    $data['scraped_content_field_data']['table']['base'] = [
       'field' => 'id',
       'title' => $this->t('Scraped Content'),
       'help' => $this->t('This data is reported via a RESTful interface and is also programatically and manually translated'),
@@ -44,7 +44,7 @@ class ScrapedContentViewsData extends EntityViewsData {
  ** @see: https://api.drupal.org/api/drupal/core%21modules%21views%21src%21Plugin%21views%21sort%21SortPluginBase.php/group/views_sort_handlers/8.5.x **
  **                                                                          **
  ******************************************************************************/
-    $data['scraped_content']['id'] = [
+    $data['scraped_content_field_data']['id'] = [
       'title' => $this->t('Scraped Content ID'),
       'help' => $this->t('A unique ID that is incremented automatically when a row is created'),
       'field' => [
@@ -61,7 +61,7 @@ class ScrapedContentViewsData extends EntityViewsData {
       ],
     ];
 
-    $data['scraped_content']['headline'] = [
+    $data['scraped_content_field_data']['headline'] = [
       'title' => $this->t('Headline'),
       'help' => $this->t('The headline that was assigned to the article'),
       'field' => [
@@ -75,7 +75,7 @@ class ScrapedContentViewsData extends EntityViewsData {
       ],
     ];
 
-    $data['scraped_content']['article_body'] = [
+    $data['scraped_content_field_data']['article_body'] = [
       'title' => $this->t('Body'),
       'help' => $this->t('The body that was assigned to the article'),
       'field' => [
@@ -92,7 +92,7 @@ class ScrapedContentViewsData extends EntityViewsData {
       ],
     ];
 
-    $data['scraped_content']['article_status'] = [
+    $data['scraped_content_field_data']['article_status'] = [
       'title' => $this->t('Status'),
       'help' => $this->t('The status of the article'),
       'field' => [
@@ -109,7 +109,7 @@ class ScrapedContentViewsData extends EntityViewsData {
       ],
     ];
 
-    $data['scraped_content']['editor'] = [
+    $data['scraped_content_field_data']['editor'] = [
       'title' => $this->t('Editor'),
       'help' => $this->t('The editor of the article'),
       'field' => [
@@ -123,6 +123,36 @@ class ScrapedContentViewsData extends EntityViewsData {
       ],
       'sort' => [
         'id' => 'standard',
+      ],
+    ];
+
+    $data['scraped_content_field_data']['source'] = [
+      'title' => $this->t('Source'),
+      'help' => $this->t('The source URL'),
+      'field' => [
+        'id' => 'standard',
+      ],
+      'filter' => [
+        'id' => 'string',
+      ],
+      'sort' => [
+        'id' => 'standard',
+      ],
+    ];
+
+    $data['scraped_content_field_data']['created'] = [
+      'title' => $this->t('Created'),
+      'help' => $this->t('The time the entry was created'),
+      'field' => [
+        'id' => 'datetime',
+      ],
+    ];
+
+    $data['scraped_content_field_data']['changed'] = [
+      'title' => $this->t('Changed'),
+      'help' => $this->t('The time the entry was updated'),
+      'field' => [
+        'id' => 'datetime',
       ],
     ];
 
