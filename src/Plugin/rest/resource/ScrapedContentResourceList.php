@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *   id = "scraped_content_list",
  *   label = @Translation("Scraped Content item list"),
  *   uri_paths = {
- *     "canonical" = "/web_scraper/data"
+ *     "canonical" = "/web_scraper/data/{from}/{to}"
  *   }
  * )
  */
@@ -97,6 +97,8 @@ class ScrapedContentResourceList extends ResourceBase {
  **                                                                          **
  ******************************************************************************/
     // @todo: Don't retrieve all of the scraped content items; use filters
+    //        Either the filters should specify a date range or just forget
+    //        about the filter and hard-code a date range
     $result = $this->scrapedContentStorage->getQuery()
       ->condition('langcode', $this->currentLanguage->getId())
       ->sort('headline', 'ASC')

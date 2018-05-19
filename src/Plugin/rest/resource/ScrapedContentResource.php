@@ -156,6 +156,8 @@ class ScrapedContentResource extends ResourceBase {
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
    */
   public function post($data = NULL) {
+    // @todo: Allow creation of new translations
+    //        There is no creation of a new article
     if ($data == NULL) {
       throw new BadRequestHttpException('No data received.');
     }
