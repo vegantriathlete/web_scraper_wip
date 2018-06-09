@@ -9,3 +9,16 @@ entity.scraped_content.collection:
   route_name: entity.scraped_content.collection
   parent: system.admin_structure
   description: 'List and manage Scraped Content Data'
+
+scraped_content.table_list:
+  title: 'Custom listing of Scraped Content Data'
+  route_name: scraped_content.table_list
+  parent: main
+  menu_name: main
+  description: 'Illustrate defining a custom controller to list the Scraped Content Entities'
+scraped_content.submit_url:
+  title: 'Submit URL to scrape'
+  route_name: scraped_content.submit_url
+  parent: main
+  menu_name: main
+  description: 'Provides a form to enter a URL you wish to scrape'
