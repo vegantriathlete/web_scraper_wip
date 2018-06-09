@@ -7,6 +7,8 @@ namespace Drupal\web_scraper;
  */
 interface ScrapedContentDataValidationInterface {
 
+  // @todo: Consider adding isValidDate
+
   /**
    * Validates the status
    *

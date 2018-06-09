@@ -289,6 +289,19 @@ class ScrapedContent extends ContentEntityBase implements ScrapedContentInterfac
         'weight' => 7,
       ]);
 
+    $fields['post_date'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Post Date'))
+      ->setDescription(t('The date the original article was posted (YYYYMMDD)'))
+      ->setRequired(TRUE)
+      ->setTranslatable(FALSE)
+      ->setSetting('max_length', 255)
+      ->setDisplayOptions('form', [
+        'weight' => 8,
+      ])
+      ->setDisplayOptions('view', [
+        'weight' => 8,
+      ]);
+
 /******************************************************************************
  **                                                                          **
  ** We don't want to see any of the other fields when we are viewing the     **
