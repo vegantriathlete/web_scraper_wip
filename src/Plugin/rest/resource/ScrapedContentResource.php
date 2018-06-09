@@ -24,8 +24,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *   id = "scraped_content_item",
  *   label = @Translation("Scraped Content item"),
  *   uri_paths = {
- *     "canonical" = "/web_scraper/data/{id}",
- *     "https://www.drupal.org/link-relations/create" = "/web_scraper/data"
+ *     "canonical" = "/web_scraper/item/{id}",
+ *     "https://www.drupal.org/link-relations/create" = "/web_scraper/item"
  *   }
  * )
  */

@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *   id = "scraped_content_list",
  *   label = @Translation("Scraped Content item list"),
  *   uri_paths = {
- *     "canonical" = "/web_scraper/data/{from}/{to}"
+ *     "canonical" = "/web_scraper/list/{from}/{to}"
  *   }
  * )
  */
@@ -82,27 +82,23 @@ class ScrapedContentResourceList extends ResourceBase {
    *
    * Returns a list of scraped content items.
    *
+   * @param string $from
+   *   The from date (YYYYMMDD).
+   * @param string $to
+   *   The to date (YYYYMMDD).
+   *
    * @return \Drupal\rest\ResourceResponse
    *   The response containing the list of items.
    *
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
    */
-  public function get() {
+  public function get($from, $to) {
 
-/******************************************************************************
- **                                                                          **
- ** We are just retrieving all of the scraped content items. In a     **
- ** real situation we would do something to filter and sort them by some     **
- ** criteria the request passed.                                             **
- **                                                                          **
- ******************************************************************************/
-    // @todo: Don't retrieve all of the scraped content items; use filters
-    //        Either the filters should specify a date range or just forget
-    //        about the filter and hard-code a date range
-    $result = $this->scrapedContentStorage->getQuery()
+    $query = $this->scrapedContentStorage->getQuery()
       ->condition('langcode', $this->currentLanguage->getId())
-      ->sort('headline', 'ASC')
-      ->execute();
+      ->condition('post_date', [$from, $to], 'BETWEEN');
+      ->sort('headline', 'ASC');
+    $result = $query->execute();
 
     if ($result) {
       $items = $this->scrapedContentStorage->loadMultiple($result);
