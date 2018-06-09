@@ -17,7 +17,7 @@ use Drupal\Core\Entity\ContentEntityDeleteForm;
  ******************************************************************************/
 
 /**
- * Provides a form for deleting an IAI Ocean Temperature entity.
+ * Provides a form for deleting a Scraped Content entity.
  */
 class ScrapedContentDeleteForm extends ContentEntityDeleteForm {
 
