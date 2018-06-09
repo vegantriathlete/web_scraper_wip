@@ -3,6 +3,7 @@
 namespace Drupal\web_scraper\Controller;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -30,16 +31,26 @@ class ScrapedContentListing extends ControllerBase {
   protected $currentLanguage;
 
   /**
+   * A config object for the system performance configuration.
+   *
+   * @var \Drupal\Core\Config\Config
+   */
+  protected $config;
+
+  /**
    * Constructs the controller
    *
    * @param \Drupal\Core\Database\Connection $database
    *   A database connection object.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
    */
-  public function __construct(Connection $database, LanguageManagerInterface $language_manager) {
+  public function __construct(Connection $database, LanguageManagerInterface $language_manager, ConfigFactoryInterface $config_factory) {
     $this->database = $database;
     $this->currentLanguage = $language_manager->getCurrentLanguage();
+    $this->config = $config_factory->get('web_scraper.settings');
   }
 
   /**
@@ -48,7 +59,8 @@ class ScrapedContentListing extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('database'),
-      $container->get('language_manager')
+      $container->get('language_manager'),
+      $container->get('config.factory')
     );
   }
 
@@ -78,7 +90,7 @@ class ScrapedContentListing extends ControllerBase {
 
     // @todo: Make the limit configurable
     $results = $query
-      ->limit(3)
+      ->limit($this->config->get('number_of_items_to_list'))
       ->orderByHeader($header)
       ->execute();
 

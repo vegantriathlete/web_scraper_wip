@@ -65,3 +65,11 @@ scraped_content.submit_url:
     _title: 'Submit a URL to scrape'
   requirements:
     _permission: 'submit scraped_content url'
+
+scraped_content.admin_settings:
+  path: '/admin/config/web_scraper/settings'
+  defaults:
+    _form: '\Drupal\web_scraper\Form\SettingsForm'
+    _title: 'Web scraper settings'
+  requirements:
+    _permission: 'administer site configuration'
