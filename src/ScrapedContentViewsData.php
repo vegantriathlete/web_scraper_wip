@@ -147,6 +147,20 @@ class ScrapedContentViewsData extends EntityViewsData {
       ],
     ];
 
+    $data['scraped_content_field_data']['post_date'] = [
+      'title' => $this->t('Post Date'),
+      'help' => $this->t('The date the original article was posted'),
+      'field' => [
+        'id' => 'standard',
+      ],
+      'filter' => [
+        'id' => 'string',
+      ],
+      'sort' => [
+        'id' => 'standard',
+      ],
+    ];
+
 /******************************************************************************
  **                                                                          **
  ** Creating a view that filters by this field will throw an error.          **
