@@ -92,6 +92,13 @@ class ScrapedContentViewsData extends EntityViewsData {
       ],
     ];
 
+/******************************************************************************
+ **                                                                          **
+ ** Creating a view that filters by this field will throw an error.          **
+ ** @see: https://www.drupal.org/project/drupal/issues/2973172 and           **
+ **       https://www.drupal.org/project/drupal/issues/2973807               **
+ **                                                                          **
+ ******************************************************************************/
     $data['scraped_content_field_data']['article_status'] = [
       'title' => $this->t('Status'),
       'help' => $this->t('The status of the article'),
@@ -140,6 +147,13 @@ class ScrapedContentViewsData extends EntityViewsData {
       ],
     ];
 
+/******************************************************************************
+ **                                                                          **
+ ** Creating a view that filters by this field will throw an error.          **
+ ** @see: https://www.drupal.org/project/drupal/issues/2973172 and           **
+ **       https://www.drupal.org/project/drupal/issues/2973809               **
+ **                                                                          **
+ ******************************************************************************/
     $data['scraped_content_field_data']['created'] = [
       'title' => $this->t('Created'),
       'help' => $this->t('The time the entry was created'),
@@ -148,6 +162,13 @@ class ScrapedContentViewsData extends EntityViewsData {
       ],
     ];
 
+/******************************************************************************
+ **                                                                          **
+ ** Creating a view that filters by this field will throw an error.          **
+ ** @see: https://www.drupal.org/project/drupal/issues/2973172 and           **
+ **       https://www.drupal.org/project/drupal/issues/2973809               **
+ **                                                                          **
+ ******************************************************************************/
     $data['scraped_content_field_data']['changed'] = [
       'title' => $this->t('Changed'),
       'help' => $this->t('The time the entry was updated'),
