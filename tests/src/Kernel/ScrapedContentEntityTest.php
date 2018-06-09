@@ -12,6 +12,7 @@ use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
  */
 class IaiOceanTemperatureDataEntityTest extends EntityKernelTestBase {
 
+  // @todo: Review the whole Kernel test implementation
   /**
    * Modules to install.
    *
