@@ -98,6 +98,7 @@ class ScrapedContentResourceList extends ResourceBase {
     $query = $this->scrapedContentStorage->getQuery()
       ->condition('langcode', $this->currentLanguage->getId())
       ->condition('post_date', [$from, $to], 'BETWEEN')
+      ->condition('article_status', 'published')
       ->sort('headline', 'ASC');
     $result = $query->execute();
 
