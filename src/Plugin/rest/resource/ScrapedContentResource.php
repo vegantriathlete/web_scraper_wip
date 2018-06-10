@@ -173,12 +173,12 @@ class ScrapedContentResource extends ResourceBase {
     }
 
     if (!isset($data['article_id'])) {
-      throw new BadRequestHttpException('Article ID not found.');
+      throw new BadRequestHttpException('Article ID not passed.');
     }
 
     $scrapedContentItem = $this->scrapedContentStorage->load($data['article_id']);
     if (!$scrapedContentItem) {
-      throw new BadRequestHttpException('Article ID not found.');
+      throw new BadRequestHttpException('Article not found with passed ID.');
     }
 
     if (isset($data['language_code']) && (!in_array($data['language_code'], array_keys($this->languageManager->getLanguages())))) {
