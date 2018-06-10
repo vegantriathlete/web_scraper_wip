@@ -10,6 +10,16 @@ interface ScrapedContentDataValidationInterface {
   // @todo: Consider adding isValidDate
 
   /**
+   * Validates the POST data
+   *
+   * @param string $data
+   *   The data being passed in the POST
+   *
+   * @return boolean
+   */
+  public function hasRequiredFields($data);
+
+  /**
    * Validates the status
    *
    * @param string $status

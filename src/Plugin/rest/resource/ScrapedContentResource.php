@@ -6,7 +6,6 @@ use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\web_scraper\Entity\ScrapedContent;
 use Drupal\web_scraper\ScrapedContentDataValidationInterface;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ModifiedResourceResponse;
@@ -60,6 +59,13 @@ class ScrapedContentResource extends ResourceBase {
   protected $dataValidationService;
 
   /**
+   * The entity storage for scraped content items.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  protected $scrapedContentStorage;
+
+  /**
    * Constructs a Drupal\web_scraper\Plugin\rest\resource\ScrapedContentResource object.
    *
    * @param array $configuration
@@ -87,6 +93,7 @@ class ScrapedContentResource extends ResourceBase {
     $this->languageManager = $language_manager;
     $this->currentUser = $current_user;
     $this->dataValidationService = $data_validation_service;
+    $this->scrapedContentStorage = $entity_type_manager->getStorage('scraped_content');
   }
 
   /**
@@ -103,7 +110,7 @@ class ScrapedContentResource extends ResourceBase {
       $container->get('logger.factory')->get('rest'),
       $container->get('language_manager'),
       $container->get('current_user'),
-      $container->get('web_scraper.data_validation_service')
+      $container->get('scraped_content.data_validation_service')
     );
   }
 
@@ -121,7 +128,7 @@ class ScrapedContentResource extends ResourceBase {
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
    */
   public function get($id) {
-    if ($scrapedContent = scrapedContent::load($id)) {
+    if ($scrapedContent = $this->scrapedContentStorage->load($id)) {
       $translatedScrapedContent = $scrapedContent->getTranslation($this->currentLanguage->getId());
 
       $scrapedContentAccess = $translatedScrapedContent->access('view', NULL, TRUE);
@@ -156,14 +163,22 @@ class ScrapedContentResource extends ResourceBase {
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
    */
   public function post($data = NULL) {
-    // @todo: Allow creation of new translations
-    //        There is no creation of a new article
+    // @todo: write a client to test this method
     if ($data == NULL) {
       throw new BadRequestHttpException('No data received.');
     }
 
     if (!$this->currentUser->hasPermission('add scraped_content entity')) {
       throw new AccessDeniedHttpException();
+    }
+
+    if (!isset($data['article_id'])) {
+      throw new BadRequestHttpException('Article ID not found.');
+    }
+
+    $scrapedContentItem = $this->scrapedContentStorage->load($data['article_id']);
+    if (!$scrapedContentItem) {
+      throw new BadRequestHttpException('Article ID not found.');
     }
 
     if (isset($data['language_code']) && (!in_array($data['language_code'], array_keys($this->languageManager->getLanguages())))) {
@@ -173,10 +188,11 @@ class ScrapedContentResource extends ResourceBase {
       $data['language_code'] = 'en';
     }
 
-    if (!$this->dataValidationService->hasRequiredFields($data)) {
-      $dataIsValid = FALSE;
+    if ($scrapedContentItem->hasTranslation($data['language_code'])) {
+      throw new BadRequestHttpException('Language translation already exists.');
     }
-    elseif (!$this->dataValidationService->isValidStatus($data['status'])) {
+
+    if (!$this->dataValidationService->hasRequiredFields($data)) {
       $dataIsValid = FALSE;
     }
     elseif (!$this->dataValidationService->isValidEditor($data['editor'])) {
@@ -186,21 +202,21 @@ class ScrapedContentResource extends ResourceBase {
       $dataIsValid = TRUE;
     }
     if ($dataIsValid) {
-      $scrapedContentItem = ScrapedContent::create(
-        array(
+      $scrapedContentItem->addTranslation(
+        $data['language_code'],
+        [
           'headline' => $data['headline'],
-          'langcode' => $data['language_code'],
-          'article_status' => $data['status'],
+          'article_status' => 'translated',
           'editor' => $data['editor'],
           'article_body' => $data['body']
-        )
+        ]
       );
       try {
         $scrapedContentItem->save();
 
-        $this->logger->notice('Created Scraped Content item with ID %id.', array('%id' => $scrapedContentItem->id()));
+        $this->logger->notice('Created Scraped Content @language translation for item with ID %id.', array('%id' => $scrapedContentItem->id(), '@language' => $data['language_code']));
 
-        $url = $scrapedContentItem->urlInfo('canonical', ['absolute' => TRUE])->toString(TRUE);
+        $url = $scrapedContentItem->toUrl('canonical', ['absolute' => TRUE, 'language' => $this->languageManager->getLanguage($data['language_code'])])->toString(TRUE);
 
         $response = new ModifiedResourceResponse($scrapedContentItem, 201, ['Location' => $url->getGeneratedUrl()]);
         return $response;

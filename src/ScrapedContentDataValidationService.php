@@ -10,6 +10,16 @@ class ScrapedContentDataValidationService implements ScrapedContentDataValidatio
   /**
    * {@inheritdoc}
    */
+  public function hasRequiredFields($data) {
+    if ($data['headline'] != '' && $data['editor'] && $data['article_body'] != '') {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function isValidStatus($status) {
     if ($status == 'scraped' || $status == 'published' || $status == 'rejected') {
       return TRUE;
