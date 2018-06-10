@@ -2,6 +2,7 @@
 
 namespace Drupal\web_scraper\Plugin\rest\resource;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\rest\Plugin\ResourceBase;
@@ -96,7 +97,7 @@ class ScrapedContentResourceList extends ResourceBase {
 
     $query = $this->scrapedContentStorage->getQuery()
       ->condition('langcode', $this->currentLanguage->getId())
-      ->condition('post_date', [$from, $to], 'BETWEEN');
+      ->condition('post_date', [$from, $to], 'BETWEEN')
       ->sort('headline', 'ASC');
     $result = $query->execute();
 
