@@ -115,8 +115,8 @@ class tokenRetriever {
     $result = curl_exec($ch);
     // Report any errors
     if ($error = curl_error($ch)) {
-      $error_message = "cURL error at $this->endPoint: $error";
-      throw new Exception($error_message);
+      $error_message = "cURL error at $this->restURI: $error";
+      throw new \Exception($error_message);
     }
     curl_close($ch);
     return $result;
@@ -164,8 +164,8 @@ class curlExecutor {
     $result = curl_exec($ch);
     // Report any errors
     if ($error = curl_error($ch)) {
-      $error_message = "cURL error at $this->endPoint: $error";
-      throw new Exception($error_message);
+      $error_message = "cURL error at $this->restURI: $error";
+      throw new \Exception($error_message);
     }
     curl_close($ch);
     return $result;
