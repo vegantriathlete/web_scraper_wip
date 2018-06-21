@@ -162,7 +162,7 @@ class ScrapedContentResource extends ResourceBase {
    *
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
    */
-  public function post($data = NULL) {
+  public function post(array $data) {
     // @todo: write a client to test this method
     if ($data == NULL) {
       throw new BadRequestHttpException('No data received.');
