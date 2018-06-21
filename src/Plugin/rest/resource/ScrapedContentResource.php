@@ -163,7 +163,6 @@ class ScrapedContentResource extends ResourceBase {
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
    */
   public function post(array $data) {
-    // @todo: write a client to test this method
     if ($data == NULL) {
       throw new BadRequestHttpException('No data received.');
     }
@@ -208,7 +207,7 @@ class ScrapedContentResource extends ResourceBase {
           'headline' => $data['headline'],
           'article_status' => 'translated',
           'editor' => $data['editor'],
-          'article_body' => $data['body']
+          'article_body' => $data['article_body']
         ]
       );
       try {
@@ -218,7 +217,7 @@ class ScrapedContentResource extends ResourceBase {
 
         $url = $scrapedContentItem->toUrl('canonical', ['absolute' => TRUE, 'language' => $this->languageManager->getLanguage($data['language_code'])])->toString(TRUE);
 
-        $response = new ModifiedResourceResponse($scrapedContentItem, 201, ['Location' => $url->getGeneratedUrl()]);
+        $response = new ModifiedResourceResponse($scrapedContentItem->getTranslation($data['language_code']), 201, ['Location' => $url->getGeneratedUrl()]);
         return $response;
       }
       catch (EntityStorageException $e) {

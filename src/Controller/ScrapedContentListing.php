@@ -88,7 +88,6 @@ class ScrapedContentListing extends ControllerBase {
       ['data' => $this->t('Editor'), 'field' => 'editor']
     ];
 
-    // @todo: Make the limit configurable
     $results = $query
       ->limit($this->config->get('number_of_items_to_list'))
       ->orderByHeader($header)
