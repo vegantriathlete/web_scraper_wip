@@ -1,6 +1,7 @@
 services:
   scraped_content.data_validation_service:
     class: Drupal\web_scraper\ScrapedContentDataValidationService
+    arguments: ['@entity_type.manager']
   web_scraper.web_scraper:
     class: Drupal\web_scraper\WebScraperService
     arguments: ['@language_manager', '@logger.factory', '@scraped_content.data_validation_service']

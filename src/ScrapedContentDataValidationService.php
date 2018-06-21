@@ -2,10 +2,29 @@
 
 namespace Drupal\web_scraper;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+
 /**
  * Defines the data validation service.
  */
 class ScrapedContentDataValidationService implements ScrapedContentDataValidationInterface {
+
+  /**
+   * The user storage service
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  protected $userStorage;
+
+  /**
+   * Constructs a Drupal\web_scraper\ScrapedContentDataValidationInterface object.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
+   */
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->userStorage = $entity_type_manager->getStorage('user');
+  }
 
   /**
    * {@inheritdoc}
@@ -31,8 +50,7 @@ class ScrapedContentDataValidationService implements ScrapedContentDataValidatio
    * {@inheritdoc}
    */
   public function isValidEditor($editor) {
-    // @todo: Validate the uid exists
-    if (is_numeric($editor)) {
+    if ($account = $this->userStorage->load($editor)) {
       return TRUE;
     }
     return FALSE;
